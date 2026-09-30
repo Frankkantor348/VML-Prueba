@@ -23,6 +23,17 @@ services:
     # El Dockerfile vive en backend/, así que ese es el contexto de compilación.
     rootDir: backend
     dockerfilePath: ./Dockerfile
+    # Filtro de compilación. El repositorio es un monorepo, así que solo quiero
+    # reconstruir la API cuando cambie algo del backend; sin esto, tocar el
+    # frontend o la app móvil dispararía un despliegue que no aporta nada.
+    buildFilter:
+      paths:
+        - backend/**
+        - render.yaml
+      ignoredPaths:
+        - frontend/**
+        - mobile/**
+        - "**/*.md"
     # Render consulta este endpoint para dar el despliegue por bueno.
     healthCheckPath: /api/health
     envVars:
