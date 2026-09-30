@@ -391,8 +391,8 @@ Todo lo de la tabla se ejecutó realmente; no hay resultados supuestos.
 
 | Componente | Proveedor | URL |
 |---|---|---|
-| API | Render (Web Service con Docker) | _pendiente_ |
-| Health check | Render | _pendiente_ |
+| API | Render (Web Service con Docker) | https://vml-prueba-api.onrender.com |
+| Health check | Render | https://vml-prueba-api.onrender.com/api/health |
 | Base de datos | Render PostgreSQL | red interna |
 | Frontend Angular | Vercel | _pendiente_ |
 | APK Android | GitHub Releases | _pendiente_ |
