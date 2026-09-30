@@ -1,0 +1,55 @@
+# Integración continua: compila y prueba lo que ya se entrega.
+# El despliegue lo hacen Render (API) y Vercel (frontend) desde sus paneles,
+# así que aquí solo se valida que el repositorio se mantenga sano.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    name: Backend (.NET)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaurar dependencias
+        run: dotnet restore
+
+      - name: Compilar en Release
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Ejecutar las pruebas unitarias
+        run: dotnet test --no-build --configuration Release
+
+  frontend:
+    name: Frontend (Angular)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      # El .npmrc del proyecto fija legacy-peer-deps, necesario con npm 10.x.
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar
+        run: npm run build

@@ -1,0 +1,27 @@
+<header class="cabecera">
+  <div class="marca">
+    <span class="punto"></span>
+    <strong>Prueba Técnica Full-Stack</strong>
+  </div>
+
+  <nav>
+    <a routerLink="/register" routerLinkActive="activo">Registro</a>
+    <a routerLink="/login" routerLinkActive="activo">Ingresar</a>
+  </nav>
+
+  <div class="sesion">
+    @if (sesionIniciada()) {
+      <span class="correo">{{ correo() }}</span>
+      <button type="button" class="secundario" (click)="cerrarSesion()">Salir</button>
+    }
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer class="pie-pagina">
+  Consume la API .NET desplegada: <code>/api/health</code>, <code>/api/auth/register</code> y
+  <code>/api/auth/login</code>.
+</footer>

@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# .NET
+# ---------------------------------------------------------------------------
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+.vs/
+Debug/
+Release/
+TestResults/
+*.nupkg
+*.snupkg
+
+# ---------------------------------------------------------------------------
+# Node / Angular
+# ---------------------------------------------------------------------------
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-error.log*
+
+# ---------------------------------------------------------------------------
+# Flutter / Dart
+# ---------------------------------------------------------------------------
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+*.iml
+
+# ---------------------------------------------------------------------------
+# Secretos: no deben llegar nunca al repositorio
+# ---------------------------------------------------------------------------
+appsettings.*.local.json
+appsettings.Production.json
+.env
+*.pfx
+*.keystore
+key.properties
+
+# ---------------------------------------------------------------------------
+# Editores y sistema operativo
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+.DS_Store
+Thumbs.db

@@ -1,0 +1,26 @@
+# PostgreSQL local para desarrollo y para que el evaluador levante la API sin
+# depender de ningún proveedor en la nube.
+# Uso: docker compose up -d postgres
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: vmltest-postgres
+    # Si Docker Desktop se reinicia, el contenedor vuelve solo. Sin esto queda
+    # detenido y la API responde 503 hasta que alguien lo levante a mano.
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vml
+      POSTGRES_PASSWORD: vml
+      POSTGRES_DB: vmltest
+    ports:
+      - "5432:5432"
+    volumes:
+      - vmltest-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vml -d vmltest"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  vmltest-pgdata:

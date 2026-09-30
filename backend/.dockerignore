@@ -1,0 +1,19 @@
+# Lo que no hace falta subir al contexto de compilación de la imagen.
+# Menos contexto = compilación más rápida y caché de capas más estable.
+
+# Artefactos de compilación de .NET
+**/bin/
+**/obj/
+
+# Entorno de Visual Studio
+**/.vs/
+**/*.user
+**/*.suo
+
+# Pruebas y scripts: la imagen solo necesita el código de src/
+tests/
+db/
+
+# Configuración local
+**/appsettings.Development.json
+**/appsettings.*.local.json

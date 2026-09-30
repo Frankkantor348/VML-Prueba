@@ -1,0 +1,22 @@
+<section class="tarjeta">
+  <h2>Sesión iniciada</h2>
+  <p class="descripcion">
+    La API validó las credenciales y entregó un token JWT, que queda guardado en el
+    navegador para las peticiones autenticadas.
+  </p>
+
+  <dl class="datos">
+    <dt>Correo</dt>
+    <dd>{{ correo() }}</dd>
+
+    <dt>Token JWT</dt>
+    <dd class="token">{{ tokenRecortado() }}</dd>
+  </dl>
+
+  <p class="nota">
+    El token aparece recortado: es una credencial válida hasta su vencimiento y no
+    conviene dejarla completa en pantalla. Se guarda íntegro en el navegador.
+  </p>
+
+  <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+</section>

@@ -1,0 +1,336 @@
+/* ===========================================================================
+   Sistema de diseño de la aplicación.
+   El color, el espaciado y los radios salen de estos tokens: se cambian una vez
+   y se aplican a todas las pantallas.
+   Los estilos son globales a propósito; la aplicación es de tres pantallas y
+   así se evita duplicar las mismas reglas en cada componente.
+   =========================================================================== */
+:root {
+  /* Color: neutro frío, un solo acento azul y dos colores de estado. */
+  --color-fondo: #f4f6f8;
+  --color-superficie: #ffffff;
+  --color-tinta: #10161f;
+  --color-tinta-suave: #55606f;
+  --color-borde: #dfe4ea;
+  --color-acento: #1e4d8c;
+  --color-acento-fuerte: #16386a;
+  --color-error: #a4231c;
+  --color-error-fondo: #fdecea;
+  --color-ok: #1c6440;
+  --color-ok-fondo: #e8f4ed;
+
+  /* Espaciado: una sola escala, aplicada en pasos de 4. */
+  --esp-1: 4px;
+  --esp-2: 8px;
+  --esp-3: 12px;
+  --esp-4: 16px;
+  --esp-5: 24px;
+  --esp-6: 32px;
+  --esp-7: 48px;
+
+  /* Tipografía */
+  --tipo-sm: 0.875rem;
+  --tipo-base: 1rem;
+  --tipo-lg: 1.125rem;
+  --tipo-xl: 1.5rem;
+
+  /* Radios y sombra */
+  --radio-sm: 6px;
+  --radio-md: 10px;
+  --sombra: 0 1px 2px rgba(16, 22, 31, 0.06), 0 8px 24px rgba(16, 22, 31, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-tinta);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: var(--tipo-base);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- Cabecera */
+.cabecera {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-5);
+  padding: var(--esp-3) var(--esp-5);
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: var(--tipo-sm);
+  letter-spacing: 0.01em;
+}
+
+/* Punto de acento: marca la identidad sin recurrir a un logotipo. */
+.punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-acento);
+}
+
+.cabecera nav {
+  display: flex;
+  gap: var(--esp-2);
+  margin-left: auto;
+}
+
+.cabecera nav a {
+  padding: var(--esp-1) var(--esp-3);
+  border-radius: var(--radio-sm);
+  color: var(--color-tinta-suave);
+  font-size: var(--tipo-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.cabecera nav a:hover {
+  background: var(--color-fondo);
+  color: var(--color-tinta);
+}
+
+/* La pestaña activa se distingue por color y fondo, no solo por color. */
+.cabecera nav a.activo {
+  background: var(--color-fondo);
+  color: var(--color-acento);
+}
+
+.sesion {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+}
+
+.correo {
+  color: var(--color-tinta-suave);
+  font-size: var(--tipo-sm);
+}
+
+/* ------------------------------------------------------------------ Cuerpo */
+main {
+  display: flex;
+  justify-content: center;
+  padding: var(--esp-7) var(--esp-4);
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--esp-6);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra);
+}
+
+.tarjeta h2 {
+  margin: 0 0 var(--esp-2);
+  font-size: var(--tipo-xl);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.descripcion {
+  margin: 0 0 var(--esp-5);
+  color: var(--color-tinta-suave);
+  font-size: var(--tipo-sm);
+}
+
+/* -------------------------------------------------------------- Formulario */
+.campo {
+  margin-bottom: var(--esp-4);
+}
+
+.campo label {
+  display: block;
+  margin-bottom: var(--esp-1);
+  font-size: var(--tipo-sm);
+  font-weight: 600;
+}
+
+.campo input {
+  width: 100%;
+  padding: var(--esp-2) var(--esp-3);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  color: var(--color-tinta);
+  font: inherit;
+  font-size: var(--tipo-base);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.campo input:hover {
+  border-color: #c7cfd9;
+}
+
+/* Foco siempre visible: es requisito de accesibilidad, no decoración. */
+.campo input:focus-visible {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px rgba(30, 77, 140, 0.18);
+  outline: none;
+}
+
+.campo-error {
+  margin: var(--esp-1) 0 0;
+  color: var(--color-error);
+  font-size: var(--tipo-sm);
+}
+
+button {
+  width: 100%;
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--color-acento);
+  border: 1px solid var(--color-acento);
+  border-radius: var(--radio-sm);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--color-acento-fuerte);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+button.secundario {
+  width: auto;
+  padding: var(--esp-1) var(--esp-3);
+  background: transparent;
+  border-color: var(--color-borde);
+  color: var(--color-tinta);
+  font-size: var(--tipo-sm);
+  font-weight: 500;
+}
+
+button.secundario:hover:not(:disabled) {
+  background: var(--color-fondo);
+}
+
+/* ------------------------------------------------------------------ Avisos */
+.alerta {
+  margin: 0 0 var(--esp-4);
+  padding: var(--esp-3) var(--esp-4);
+  border-radius: var(--radio-sm);
+  font-size: var(--tipo-sm);
+}
+
+.alerta-error {
+  background: var(--color-error-fondo);
+  color: var(--color-error);
+}
+
+.alerta-ok {
+  background: var(--color-ok-fondo);
+  color: var(--color-ok);
+}
+
+/* Aclaración breve, sin peso visual, para datos que merecen una advertencia. */
+.nota {
+  margin: 0 0 var(--esp-5);
+  color: var(--color-tinta-suave);
+  font-size: 0.8125rem;
+}
+
+.pie {
+  margin: var(--esp-5) 0 0;
+  color: var(--color-tinta-suave);
+  font-size: var(--tipo-sm);
+  text-align: center;
+}
+
+a {
+  color: var(--color-acento);
+}
+
+/* -------------------------------------------------------------- Sesión */
+.datos {
+  margin: 0 0 var(--esp-5);
+}
+
+.datos dt {
+  color: var(--color-tinta-suave);
+  font-size: var(--tipo-sm);
+  font-weight: 600;
+}
+
+.datos dd {
+  margin: 0 0 var(--esp-4);
+  font-size: var(--tipo-base);
+}
+
+/* El token es largo: se parte para que no desborde la tarjeta. */
+.token {
+  padding: var(--esp-3);
+  background: var(--color-fondo);
+  border-radius: var(--radio-sm);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.pie-pagina {
+  padding: var(--esp-5);
+  color: var(--color-tinta-suave);
+  font-size: var(--tipo-sm);
+  text-align: center;
+}
+
+.pie-pagina code {
+  padding: 2px var(--esp-1);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  font-size: 0.8125rem;
+}
+
+/* Quien pidió menos movimiento en su sistema no recibe transiciones. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* En pantallas angostas la cabecera se acomoda en dos filas. */
+@media (max-width: 640px) {
+  .cabecera {
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+  }
+
+  .cabecera nav {
+    margin-left: 0;
+  }
+
+  main {
+    padding: var(--esp-5) var(--esp-4);
+  }
+
+  .tarjeta {
+    padding: var(--esp-5);
+  }
+}

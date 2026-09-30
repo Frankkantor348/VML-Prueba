@@ -1,0 +1,50 @@
+@VmlTest.Api_HostAddress = http://localhost:5065
+
+### 1. Estado del servicio y de la base de datos -> 200 OK
+GET {{VmlTest.Api_HostAddress}}/api/health
+Accept: application/json
+
+### 2. Registro de usuario -> 201 Created
+POST {{VmlTest.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "candidato@vml.com",
+  "password": "ClaveSegura123"
+}
+
+### 2b. Registro repetido -> 409 Conflict
+POST {{VmlTest.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "candidato@vml.com",
+  "password": "ClaveSegura123"
+}
+
+### 2c. Registro con datos inválidos -> 400 Bad Request
+POST {{VmlTest.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "sin-arroba",
+  "password": "corta"
+}
+
+### 3. Login correcto -> 200 OK con token
+POST {{VmlTest.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "candidato@vml.com",
+  "password": "ClaveSegura123"
+}
+
+### 3b. Login con contraseña incorrecta -> 401 Unauthorized
+POST {{VmlTest.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "candidato@vml.com",
+  "password": "ClaveEquivocada123"
+}

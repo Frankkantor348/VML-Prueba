@@ -1,0 +1,24 @@
+[
+  {
+    "Name": "API (perfil por defecto)",
+    "Projects": [
+      {
+        "Path": "src\\VmlTest.Api\\VmlTest.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "API + pruebas unitarias",
+    "Projects": [
+      {
+        "Path": "src\\VmlTest.Api\\VmlTest.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "tests\\VmlTest.Application.Tests\\VmlTest.Application.Tests.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

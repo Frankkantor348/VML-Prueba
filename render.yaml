@@ -1,0 +1,51 @@
+# Blueprint de Render.
+#
+# Crea de una sola vez la base PostgreSQL y el servicio web de la API, y los
+# conecta entre sí. Se despliega desde el panel:
+#
+#   New +  ->  Blueprint  ->  elegir este repositorio  ->  Apply
+#
+# Render lee este archivo, aprovisiona los recursos y vuelve a desplegar solo
+# cuando se hace push a la rama principal.
+databases:
+  - name: vml-prueba-db
+    databaseName: vmltest
+    user: vml
+    plan: free
+    region: ohio
+
+services:
+  - type: web
+    name: vml-prueba-api
+    runtime: docker
+    plan: free
+    region: ohio
+    # El Dockerfile vive en backend/, así que ese es el contexto de compilación.
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    # Render consulta este endpoint para dar el despliegue por bueno.
+    healthCheckPath: /api/health
+    envVars:
+      # Render inyecta la cadena de conexión de la base creada arriba.
+      # Llega en formato URI (postgres://...) y la API la normaliza al arrancar.
+      - key: ConnectionStrings__Default
+        fromDatabase:
+          name: vml-prueba-db
+          property: connectionString
+
+      # Clave de firma del JWT: la genera Render y nunca pasa por el repositorio.
+      - key: Jwt__Secret
+        generateValue: true
+      - key: Jwt__Issuer
+        value: VmlTest.Api
+      - key: Jwt__Audience
+        value: VmlTest.Clients
+
+      # Dominio del frontend, separado por comas si hay varios.
+      # Se completa en el panel cuando Vercel entregue la URL; sin este valor el
+      # navegador bloqueará las llamadas por CORS.
+      - key: Cors__AllowedOrigins
+        sync: false
+
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production

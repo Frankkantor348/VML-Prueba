@@ -1,0 +1,66 @@
+<section class="tarjeta">
+  <h2>Crear cuenta</h2>
+  <p class="descripcion">
+    El correo debe ser único: si ya está registrado, la API responderá con un conflicto.
+  </p>
+
+  <form [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+    <div class="campo">
+      <label for="register-email">Correo electrónico</label>
+      <input
+        id="register-email"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        placeholder="candidato@vml.com"
+      />
+      @if (formulario.controls.email.touched && formulario.controls.email.invalid) {
+        <p class="campo-error">
+          @if (formulario.controls.email.errors?.['required']) {
+            El correo es obligatorio.
+          } @else if (formulario.controls.email.errors?.['email']) {
+            Escribe un correo con formato válido.
+          }
+        </p>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="register-password">Contraseña</label>
+      <input
+        id="register-password"
+        type="password"
+        formControlName="password"
+        autocomplete="new-password"
+      />
+      @if (formulario.controls.password.touched && formulario.controls.password.invalid) {
+        <p class="campo-error">
+          @if (formulario.controls.password.errors?.['required']) {
+            La contraseña es obligatoria.
+          } @else if (formulario.controls.password.errors?.['minlength']) {
+            Debe tener al menos 8 caracteres.
+          }
+        </p>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+    }
+
+    @if (registrado()) {
+      <p class="alerta alerta-ok" role="status">
+        Cuenta creada para <strong>{{ registrado() }}</strong>. Ya puedes
+        <a routerLink="/login">iniciar sesión</a>.
+      </p>
+    }
+
+    <button type="submit" [disabled]="enviando()">
+      {{ enviando() ? 'Registrando…' : 'Registrarme' }}
+    </button>
+  </form>
+
+  <p class="pie">
+    ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+  </p>
+</section>
