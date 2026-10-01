@@ -394,7 +394,7 @@ Todo lo de la tabla se ejecutó realmente; no hay resultados supuestos.
 | API | Render (Web Service con Docker) | https://vml-prueba-api.onrender.com |
 | Health check | Render | https://vml-prueba-api.onrender.com/api/health |
 | Base de datos | Render PostgreSQL | red interna |
-| Frontend Angular | Vercel | _pendiente_ |
+| Frontend Angular | Vercel | https://vml-prueba.vercel.app |
 | APK Android | GitHub Releases | _pendiente_ |
 
 ### 10.2 Orden de despliegue
@@ -433,8 +433,27 @@ el `Dockerfile`.
 
 ```bash
 cd mobile
-flutter build apk --release --dart-define=API_URL=https://<api>.onrender.com/api
+flutter build apk --release --dart-define=API_URL=https://vml-prueba-api.onrender.com/api
 ```
+
+El APK se genera en `mobile/build/app/outputs/flutter-apk/app-release.apk`. Después se
+adjunta a un *release* de GitHub:
+
+1. En GitHub: **Releases** → **Draft a new release**
+2. *Choose a tag* → escribir `v1.0.0` → **Create new tag on publish**
+3. Título: `v1.0.0 — Prueba técnica Full-Stack`
+4. Adjuntar `app-release.apk` en la zona de archivos
+5. **Publish release** y copiar el enlace directo al APK para el entregable
+
+Dos cosas que conviene saber del APK:
+
+- **La URL de la API se inyecta al compilar**, no está en el código. Un APK compilado sin
+  `--dart-define` usaría la dirección local por defecto y no funcionaría en un teléfono.
+- **Firma con la clave de depuración.** Es el comportamiento por defecto de la plantilla de
+  Flutter (`android/app/build.gradle.kts` trae el `TODO` para sustituirla). El APK se instala
+  sin problema en cualquier teléfono, así que sirve para la prueba, pero para publicar en
+  Google Play haría falta un *keystore* propio: la clave de depuración no es aceptada por la
+  tienda y no se debe reutilizar entre aplicaciones.
 
 El APK de release **exige HTTPS**: el permiso para tráfico sin cifrar está declarado solo
 en `android/app/src/debug/AndroidManifest.xml`, así que la build de producción sigue
@@ -453,15 +472,34 @@ bloqueando el HTTP en claro, como corresponde.
 - **Medir el peso del repositorio.** Ya está verificado: con el `.gitignore` del proyecto se
   suben 133 archivos y 0,5 MB, no los 2,5 GB de `node_modules` y `mobile/build`.
 
-### Pintar el estado del despliegue
+### 10.6 Verificación en producción
 
-Cuando la API esté arriba, esta debería ser la comprobación mínima antes de avisar al
-evaluador:
+Medido sobre las URLs públicas, no sobre el entorno local:
 
-```bash
-curl https://<api>.onrender.com/api/health
-# {"status":"Healthy","database":"Connected", ...}
-```
+| Prueba | Resultado |
+|---|---|
+| `GET https://vml-prueba-api.onrender.com/api/health` | `200` — `{"status":"Healthy","database":"Connected"}` |
+| `POST /api/auth/register` | `201` con `id`, `email` y `createdAt` |
+| `POST /api/auth/register` repetido | `409` con `ProblemDetails` y `traceId` |
+| `POST /api/auth/login` | `200` con el JWT |
+| `POST /api/auth/login` con clave incorrecta | `401` con el mismo mensaje que un correo inexistente |
+| `GET /swagger/v1/swagger.json` | `200` — los tres endpoints documentados |
+| `GET https://vml-prueba.vercel.app/` | `200` con `<app-root>` y el título de la aplicación |
+| `GET /login` (ruta de Angular) | `200` — el rewrite de la SPA está aplicado |
+| Bundle servido por Vercel | contiene `https://vml-prueba-api.onrender.com/api` |
+| Preflight CORS desde el dominio del frontend | `204` con `Access-Control-Allow-Origin: https://vml-prueba.vercel.app` |
+| Petición real de login con el `Origin` del navegador | `200` con la cabecera `Access-Control-Allow-Origin`, así que el navegador ya no bloquea la llamada |
+
+Dos comprobaciones que merecen explicación, porque desde fuera parecen funcionar sin
+estarlo:
+
+- **El preflight devuelve `204` incluso cuando el origen no está autorizado.** Lo que
+decide es la cabecera `Access-Control-Allow-Origin`, no el código de estado. Se mide con
+  `curl -X OPTIONS -H "Origin: ..."`.
+- **`Duration: 15s` en el panel de Vercel delató un build que no llegó a compilar.** El
+despliegue decía `Ready` pero servía `404` en todas las rutas, porque el directorio de
+salida publicado estaba vacío. Se corrigió declarando `outputDirectory` en
+`frontend/vercel.json`, que es más fiable que el ajuste del panel porque queda versionado.
 
 ---
 
