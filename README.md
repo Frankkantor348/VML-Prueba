@@ -10,8 +10,8 @@ adaptadores), cliente web Angular, app móvil Flutter y despliegue en servicios 
 > - [x] App móvil Flutter (APK de release, probado en un teléfono)
 > - [x] Despliegue en la nube (API, base de datos y frontend públicos)
 >
-> Todas las piezas están desplegadas y verificadas contra las URLs públicas. Lo único
-> pendiente es publicar el APK en un *release* de GitHub (sección 10.4).
+> Las cuatro piezas están desplegadas y verificadas contra las URLs públicas. El APK se
+> distribuye desde un *release* de GitHub (sección 10.4).
 
 ---
 
@@ -396,7 +396,7 @@ Todo lo de la tabla se ejecutó realmente; no hay resultados supuestos.
 | Health check | Render | https://vml-prueba-api.onrender.com/api/health |
 | Base de datos | Render PostgreSQL | red interna |
 | Frontend Angular | Vercel | https://vml-prueba.vercel.app |
-| APK Android | GitHub Releases | _pendiente_ |
+| APK Android | GitHub Releases | https://github.com/Frankkantor348/VML-Prueba/releases/download/v1.0.0/app-release.apk |
 
 ### 10.2 Orden de despliegue
 
