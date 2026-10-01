@@ -65,6 +65,11 @@ app.UseSwaggerUI(options =>
 app.UseCors(CorsExtensions.PolicyName);
 app.UseAuthentication();
 app.UseAuthorization();
+
+// La raíz no expone nada del negocio, así que redirige a Swagger: quien abra la
+// URL base de la API encuentra la documentación en lugar de un 404.
+app.MapGet("/", () => Results.Redirect("/swagger"));
+
 app.MapControllers();
 
 app.Run();
