@@ -485,6 +485,7 @@ Medido sobre las URLs públicas, no sobre el entorno local:
 | `POST /api/auth/login` | `200` con el JWT |
 | `POST /api/auth/login` con clave incorrecta | `401` con el mismo mensaje que un correo inexistente |
 | `GET /swagger/v1/swagger.json` | `200` — los tres endpoints documentados |
+| `GET /` (raíz de la API) | `302` hacia `/swagger`: quien abra la URL base encuentra la documentación en lugar de un 404 |
 | `GET https://vml-prueba.vercel.app/` | `200` con `<app-root>` y el título de la aplicación |
 | `GET /login` (ruta de Angular) | `200` — el rewrite de la SPA está aplicado |
 | Bundle servido por Vercel | contiene `https://vml-prueba-api.onrender.com/api` |
