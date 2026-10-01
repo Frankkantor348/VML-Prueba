@@ -7,10 +7,11 @@ adaptadores), cliente web Angular, app móvil Flutter y despliegue en servicios 
 > **Estado del repositorio**
 > - [x] Backend .NET (Domain, Application, Infrastructure, Api) + pruebas unitarias
 > - [x] Frontend Angular
-> - [ ] App móvil Flutter (APK)
-> - [ ] Despliegue en la nube
+> - [x] App móvil Flutter (APK de release, probado en un teléfono)
+> - [x] Despliegue en la nube (API, base de datos y frontend públicos)
 >
-> Este README se completa a medida que avanza cada módulo.
+> Todas las piezas están desplegadas y verificadas contra las URLs públicas. Lo único
+> pendiente es publicar el APK en un *release* de GitHub (sección 10.4).
 
 ---
 
@@ -489,6 +490,8 @@ Medido sobre las URLs públicas, no sobre el entorno local:
 | Bundle servido por Vercel | contiene `https://vml-prueba-api.onrender.com/api` |
 | Preflight CORS desde el dominio del frontend | `204` con `Access-Control-Allow-Origin: https://vml-prueba.vercel.app` |
 | Petición real de login con el `Origin` del navegador | `200` con la cabecera `Access-Control-Allow-Origin`, así que el navegador ya no bloquea la llamada |
+| APK de release en un teléfono Android | instalado, registro contra la API de producción y login correcto devolviendo el JWT |
+| Contenido del APK | la URL de producción va embebida en las tres arquitecturas (`arm64-v8a`, `armeabi-v7a`, `x86_64`) y no aparece `localhost` |
 
 Dos comprobaciones que merecen explicación, porque desde fuera parecen funcionar sin
 estarlo:
